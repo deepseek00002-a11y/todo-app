@@ -29,8 +29,8 @@ function App() {
   };
   const remaining = todos.filter((t) => !t.completed).length;
   const total = todos.length;
-  const progress =
-    total === 0 ? 0 : Math.round(((total - remaining) / total) * 100);
+  // const progress =
+  //   total === 0 ? 0 : Math.round(((total - remaining) / total) * 100);
   return (
     <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-md p-4 border border-gray-200 overflow-hidden">
       {/*Header*/}
