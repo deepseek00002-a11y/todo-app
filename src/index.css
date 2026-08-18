@@ -1,0 +1,92 @@
+import { useState } from "react";
+import "./index.css";
+
+interface Todo {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
+function App() {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [input, setInput] = useState("");
+
+  const addTodo = () => {
+    if (input.trim() === "") return;
+    const newTodo: Todo = {
+      id: Date.now().toString(),
+      text: input.trim(),
+      completed: false,
+    };
+    setTodos([...todos, newTodo]);
+    setInput("");
+  };
+
+  const toggleTodo = (id: string) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  const deleteTodo = (id: string) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
+  return (
+    <div className="min-h-screen bg-background text-foreground flex justify-center pt-16 px-4">
+      <div className="w-full max-w-md">
+        <h1 className="text-2xl font-semibold mb-6">Task</h1>
+        <div className="flex gap-2 mb-6">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Add a new task"
+            className="flex-1 rounded-md border border-input bg-card px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+          />
+          <button
+            onClick={addTodo}
+            className="rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90"
+          >
+            Add
+          </button>
+        </div>
+        <div className="flex flex-col gap-2">
+          {todos.map((todo) => (
+            <div
+              key={todo.id}
+              className="flex items-center justify-between gap-3 rounded-md border border-border bg-card px-3 py-2"
+            >
+              <span
+                onClick={() => toggleTodo(todo.id)}
+                className={`cursor-pointer text-sm ${
+                  todo.completed ? "line-through text-muted-foreground" : ""
+                }`}
+              >
+                {todo.text}
+              </span>
+              <span
+                onClick={() => toggleTodo(todo.id)}
+                className={`cursor-pointer text-xs font-semibold ${
+                  todo.completed ? "text-green-600" : "text-red-500"
+                }`}
+              >
+                {todo.completed ? "Completed" : "Not Completed"}
+              </span>
+              <button
+                onClick={() => deleteTodo(todo.id)}
+                className="rounded-md bg-destructive text-destructive-foreground px-3 py-1 text-xs font-medium hover:opacity-90"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
